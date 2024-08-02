@@ -1,8 +1,9 @@
 const listaAnimes = require("../mocks/listaAnimes");
+const animesModel = require("../models/animesModel");
 
-function middlewareGetAnimeById(req, res, next) {
+async function middlewareGetAnimeById(req, res, next) {
   const { id } = req.params;
-  const anime = listaAnimes.find((anime) => anime.id === Number(id));
+  const anime = await animesModel.getAnimeByIdModel(id);
 
   if (!anime) {
     return res.status(404).send("Anime não encontrado");
@@ -11,14 +12,14 @@ function middlewareGetAnimeById(req, res, next) {
   next();
 }
 
-function middlewareInsertAnime(req, res, next) {
+async function middlewareInsertAnime(req, res, next) {
   const { nome, ano, genero, imagem, sinopse } = req.body;
 
   if (!nome || !ano || !genero || !imagem || !sinopse) {
     return res.status(400).send("Dados incompletos");
   }
 
-  const anime = listaAnimes.find((anime) => anime.nome === nome);
+  const anime = await animesModel.getAnimeByNameModel(nome);
 
   if (anime) {
     return res.status(400).send("Anime já cadastrado");

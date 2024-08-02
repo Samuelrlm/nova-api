@@ -1,17 +1,20 @@
 const listaAnimes = require("../mocks/listaAnimes");
+const animesModel = require("../models/animesModel");
 
-function getAllAnimes(req, res) {
-    res.send(listaAnimes);
+async function getAllAnimes(req, res) {
+    const animes = await animesModel.getAllAnimesModel();
+
+    return res.send(animes);
 }
 
-function getAnimeById(req, res){
+async function getAnimeById(req, res){
     const { id } = req.params;
-    const anime = listaAnimes.find(anime => anime.id === Number(id));
-    
-    res.send(anime);
+    const anime = await animesModel.getAnimeByIdModel(id);
+
+    return res.send(anime);
 }
 
-function insertAnime(req,res){
+async function insertAnime(req,res){
     const {
         nome,
         ano,
@@ -22,10 +25,7 @@ function insertAnime(req,res){
         sinopse
     } = req.body;
 
-    const id = listaAnimes[listaAnimes.length - 1].id + 1;
-
-    listaAnimes.push({
-        id,
+    await animesModel.insertAnimeModel(
         nome,
         ano,
         nota,
@@ -33,7 +33,7 @@ function insertAnime(req,res){
         episodios,
         imagem,
         sinopse
-    })
+    );
 
     res.status(201).send("Anime inserido com sucesso");
 }
