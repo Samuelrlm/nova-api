@@ -35,29 +35,25 @@ async function insertAnime(req,res){
         sinopse
     );
 
-    res.status(201).send("Anime inserido com sucesso");
+    return res.status(201).send("Anime inserido com sucesso");
 }
 
 
-function updateAnime(req, res){
+async function updateAnime(req, res){
     const { id } = req.params;
     const {episodios} = req.body;
 
-    const index = listaAnimes.findIndex(anime => anime.id == Number(id));
+    await animesModel.updateAnimeModel(id, episodios);
 
-    listaAnimes[index].episodios = episodios;
-
-    res.send("Episódios atualizados com sucesso");
+    return res.send("Episódios atualizados com sucesso");
 }
 
-function deleteAnime(req, res){
+async function deleteAnime(req, res){
     const { id } = req.params;
 
-    const index = listaAnimes.findIndex(anime => anime.id == Number(id));
-    
-    listaAnimes.splice(index, 1);
+    await animesModel.deleteAnimeModel(id);
 
-    res.send("Anime deletado com sucesso");
+    return res.send("Anime deletado com sucesso");
 }
 
 module.exports = {

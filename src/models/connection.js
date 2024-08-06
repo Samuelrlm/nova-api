@@ -7,4 +7,5 @@ const connection = new Pool({
     ssl: true
 });
 
+
 module.exports = connection;

@@ -49,9 +49,27 @@ async function getAnimeByNameModel(nome){
     return anime.rows[0];
 }
 
+async function updateAnimeModel(id, episodios){
+    await connection.query(`
+        UPDATE animes SET episodios = ${episodios} WHERE id = ${id}
+    `)
+
+    return;
+}
+
+async function deleteAnimeModel(id){
+    await connection.query(`
+        DELETE FROM animes WHERE id = ${id}
+    `)
+
+    return;
+}
+
 module.exports = {
     getAllAnimesModel,
     getAnimeByIdModel,
     insertAnimeModel,
-    getAnimeByNameModel
+    getAnimeByNameModel,
+    updateAnimeModel,
+    deleteAnimeModel
 };

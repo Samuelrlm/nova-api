@@ -28,7 +28,7 @@ async function middlewareInsertAnime(req, res, next) {
   next();
 }
 
-function middlewareUpdateAnime(req, res, next) {
+async function middlewareUpdateAnime(req, res, next) {
   const { id } = req.params;
   const { episodios } = req.body;
 
@@ -36,7 +36,7 @@ function middlewareUpdateAnime(req, res, next) {
     return res.status(400).send("Dados incompletos");
   }
 
-  const anime = listaAnimes.find((anime) => anime.id === Number(id));
+  const anime = await animesModel.getAnimeByIdModel(id);
 
   if (!anime) {
     return res.status(404).send("Anime não encontrado");
@@ -45,14 +45,14 @@ function middlewareUpdateAnime(req, res, next) {
   next();
 }
 
-function middlewareDeleteAnime(req, res, next) {
+async function middlewareDeleteAnime(req, res, next) {
   const { id } = req.params;
 
   if (!id) {
     return res.status(400).send("Dados incompletos");
   }
 
-  const anime = listaAnimes.find((anime) => anime.id === Number(id));
+  const anime = await animesModel.getAnimeByIdModel(id);
 
   if (!anime) {
     return res.status(404).send("Anime não encontrado");
