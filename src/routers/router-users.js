@@ -10,4 +10,16 @@ router.post(
     usersController.createUser
 );
 
+router.get(
+    "/users/:id",
+    middlewareUsers.getUserByIdMiddleware,
+    usersController.getUserById
+);
+
+router.delete(
+    "/users/:id",
+    middlewareUsers.deleteUserMiddleware,
+    usersController.deleteUser
+);
+
 module.exports = router;
