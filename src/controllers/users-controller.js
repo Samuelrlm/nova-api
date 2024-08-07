@@ -1,29 +1,10 @@
 const userModel = require('../models/usersModel');
-const dotenv = require('dotenv');
-const crypto = require('crypto');
-dotenv.config();
+const encryptPassword = require('../helpers/encryptPassword');
 
 async function createUser(req, res){
     const { nome, email, senha } = req.body;
 
-    const secret_key = process.env.SECRET_KEY;
-
-    const hash = crypto
-    .createHash('sha256')
-    .update(secret_key)
-    .digest('base64')
-    .substr(0, 32);
-
-    const iv = crypto.randomBytes(16);
-
-    const cipher = 
-        crypto.createCipheriv('aes-256-cbc', hash, iv);
-
-    let encrypted = cipher.update(senha)
-    encrypted = Buffer.concat([encrypted, cipher.final()]);
-    
-    const pass =
-        iv.toString('hex') + ':' + encrypted.toString('hex');
+    const pass = await encryptPassword(senha);
 
     try {
         await userModel.insertUserModel(nome, email, pass);
