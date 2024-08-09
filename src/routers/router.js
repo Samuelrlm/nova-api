@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const animeController = require("../controllers/anime-controller");
 const middlewareAnimes = require("../middlewares/anime-middlewares");
+const validateMiddleware = require("../middlewares/validate-middleware");
 
 router.get("/animes", animeController.getAllAnimes);
 router.get(
@@ -11,6 +12,7 @@ router.get(
 );
 router.post(
   "/animes",
+  validateMiddleware.validateTokenMiddleware,
   middlewareAnimes.middlewareInsertAnime,
   animeController.insertAnime
 );
